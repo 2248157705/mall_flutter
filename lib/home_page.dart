@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_app/detail_page.dart';
 import 'package:login_app/user_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,9 +14,9 @@ class _HomePageState extends State<HomePage> {
 
   static final List<Widget> _widgetOptions = <Widget>[
     const InquiryPage(),
-    // const Center(child: Text('报价')),
-    // const Center(child: Text('成交')),
-    // const Center(child: Text('数据')),
+    const Center(child: Text('报价')),
+    const Center(child: Text('成交')),
+    const Center(child: Text('数据')),
     const UserPage(),
   ];
 
@@ -36,18 +37,18 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.home_outlined),
             label: '首页',
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.list_alt_outlined),
-          //   label: '报价',
-          // ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.handshake_outlined),
-          //   label: '成交',
-          // ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.data_usage_outlined),
-          //   label: '数据',
-          // ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list_alt_outlined),
+            label: '报价',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.handshake_outlined),
+            label: '成交',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.data_usage_outlined),
+            label: '数据',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
             label: '我的',
@@ -83,7 +84,7 @@ class InquiryPage extends StatelessWidget {
           _buildSearch(),
           _buildIconGrid(),
           _buildHotSelling(),
-          _buildProductList(),
+          _buildProductList(context),
         ],
       ),
     );
@@ -187,7 +188,7 @@ class InquiryPage extends StatelessWidget {
     );
   }
 
-  Widget _buildProductList() {
+  Widget _buildProductList(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
@@ -196,64 +197,72 @@ class InquiryPage extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _buildProductItem('assets/images/home/1.png', 'STM32F103C8T6', ['最小包装', '2000']),
+          _buildProductItem(context, 'assets/images/home/1.png', 'STM32F103C8T6', ['最小包装', '2000']),
           const Divider(height: 1, indent: 16, endIndent: 16),
-          _buildProductItem('assets/images/home/3.png', 'STM32F103VET6', ['最小包装', '600']),
+          _buildProductItem(context, 'assets/images/home/3.png', 'STM32F103VET6', ['最小包装', '600']),
           const Divider(height: 1, indent: 16, endIndent: 16),
-          _buildProductItem('assets/images/home/5.png', 'GD32F303CCT6', ['最小包装', '2000']),
+          _buildProductItem(context, 'assets/images/home/5.png', 'GD32F303CCT6', ['最小包装', '2000']),
         ],
       ),
     );
   }
 
-  Widget _buildProductItem(String imageUrl, String title, List<String> tags) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Image.asset(
-              imageUrl,
-              width: 80.0,
-              height: 80.0,
-              fit: BoxFit.cover,
-              errorBuilder: (c, o, s) => Image.asset('assets/images/home/no-image.png', width: 80.0, height: 80.0),
-            ),
-          ),
-          const SizedBox(width: 16.0),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 8.0),
-                Row(
-                  children: tags.map((tag) => Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                    margin: const EdgeInsets.only(right: 8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(4.0),
-                    ),
-                    child: Text(tag, style: const TextStyle(color: Colors.black54)),
-                  )).toList(),
-                ),
-              ],
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue.withOpacity(0.1),
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
+  Widget _buildProductItem(BuildContext context, String imageUrl, String title, List<String> tags) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const DetailPage()),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Image.asset(
+                imageUrl,
+                width: 80.0,
+                height: 80.0,
+                fit: BoxFit.cover,
+                errorBuilder: (c, o, s) => Image.asset('assets/images/home/no-image.png', width: 80.0, height: 80.0),
               ),
             ),
-            child: const Text('询价', style: TextStyle(color: Colors.blue)),
-          ),
-        ],
+            const SizedBox(width: 16.0),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 8.0),
+                  Row(
+                    children: tags.map((tag) => Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                      margin: const EdgeInsets.only(right: 8.0),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                      child: Text(tag, style: const TextStyle(color: Colors.black54)),
+                    )).toList(),
+                  ),
+                ],
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue.withOpacity(0.1),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+              child: const Text('询价', style: TextStyle(color: Colors.blue)),
+            ),
+          ],
+        ),
       ),
     );
   }
