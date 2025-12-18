@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:login_app/home_page.dart';
+import 'package:login_app/service/api_client.dart';
+import 'package:login_app/store/user_provider.dart';
+import 'package:login_app/model/login_request.dart';
+import 'package:dio/dio.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => UserProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -29,6 +39,40 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isChecked = false;
+  late final LoginService _loginService;
+  final Dio _dio = buildDioClient("https://testenv.xinguojun.cn/api/gtw/xgj-mall-api/");
+
+  @override
+  void initState() {
+    super.initState();
+    _loginService = LoginService(_dio);
+  }
+
+  void _login() async {
+    try {
+      final request = LoginRequest(username: '13974371029', code: '2025');
+      final response = await _loginService.login(request);
+      
+      // Save the token
+      Provider.of<UserProvider>(context, listen: false).setToken(response.data.token);
+
+      // Navigate to HomePage
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } on DioError catch (e) {
+      // Handle Dio-specific errors
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login failed: ${e.message}')),
+      );
+    } catch (e) {
+      // Handle other errors
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An unexpected error occurred: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                   color: Colors.black,
                 ),
               ),
-                const SizedBox(height: 8),
+              const SizedBox(height: 8),
               const Text(
                 '注册登录,即可使用',
                 style: TextStyle(
@@ -73,12 +117,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const Spacer(flex: 3),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
-                  );
-                },
+                onPressed: _login,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   padding: const EdgeInsets.symmetric(vertical: 16),
