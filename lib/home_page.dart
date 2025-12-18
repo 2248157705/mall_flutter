@@ -9,13 +9,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 4;
+  int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
     const InquiryPage(),
-    const Center(child: Text('报价')),
-    const Center(child: Text('成交')),
-    const Center(child: Text('数据')),
+    // const Center(child: Text('报价')),
+    // const Center(child: Text('成交')),
+    // const Center(child: Text('数据')),
     const UserPage(),
   ];
 
@@ -36,18 +36,18 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.home_outlined),
             label: '首页',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt_outlined),
-            label: '报价',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.handshake_outlined),
-            label: '成交',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.data_usage_outlined),
-            label: '数据',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.list_alt_outlined),
+          //   label: '报价',
+          // ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.handshake_outlined),
+          //   label: '成交',
+          // ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.data_usage_outlined),
+          //   label: '数据',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
             label: '我的',
