@@ -39,8 +39,11 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isChecked = false;
+  bool _showOtherLogin = false;
   late final LoginService _loginService;
   final Dio _dio = buildDioClient("https://testenv.xinguojun.cn/api/gtw/xgj-mall-api/");
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -53,25 +56,113 @@ class _LoginPageState extends State<LoginPage> {
       final request = LoginRequest(username: '13974371029', code: '2025');
       final response = await _loginService.login(request);
       
-      // Save the token
       Provider.of<UserProvider>(context, listen: false).setToken(response.data.token);
 
-      // Navigate to HomePage
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomePage()),
       );
     } on DioError catch (e) {
-      // Handle Dio-specific errors
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login failed: ${e.message}')),
       );
     } catch (e) {
-      // Handle other errors
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('An unexpected error occurred: $e')),
       );
     }
+  }
+
+  Widget _buildOneClickLoginView() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ElevatedButton(
+          onPressed: _login,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+          ),
+          child: const Text(
+            '手机号一键登录',
+            style: TextStyle(fontSize: 18, color: Colors.white),
+          ),
+        ),
+        const SizedBox(height: 16),
+        OutlinedButton(
+          onPressed: () {
+            setState(() {
+              _showOtherLogin = true;
+            });
+          },
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            side: const BorderSide(color: Colors.grey),
+          ),
+          child: const Text(
+            '其他帐号登录',
+            style: TextStyle(fontSize: 18, color: Colors.black),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildOtherLoginView() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        TextField(
+          controller: _usernameController,
+          decoration: InputDecoration(
+            hintText: '请输入帐号',
+            filled: true,
+            fillColor: Colors.grey[200],
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide: BorderSide.none,
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        TextField(
+          controller: _passwordController,
+          obscureText: true,
+          decoration: InputDecoration(
+            hintText: '请输入密码',
+            filled: true,
+            fillColor: Colors.grey[200],
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide: BorderSide.none,
+            ),
+          ),
+        ),
+        const SizedBox(height: 24),
+        ElevatedButton(
+          onPressed: () {
+            // Implement login with username and password
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+          ),
+          child: const Text(
+            '登录',
+            style: TextStyle(fontSize: 18, color: Colors.white),
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -91,59 +182,37 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               const Spacer(flex: 2),
-              const Text(
-                '您好!',
-                style: TextStyle(
+              Text(
+                _showOtherLogin ? '其他账号登录' : '您好!',
+                style: const TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
               ),
               const SizedBox(height: 8),
-              const Text(
-                '欢迎使用「新果骏」',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.black,
+              if (!_showOtherLogin)
+                const Text(
+                  '欢迎使用「新果骏」',
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                '注册登录,即可使用',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
+              if (!_showOtherLogin)
+                const SizedBox(height: 8),
+              if (!_showOtherLogin)
+                const Text(
+                  '注册登录,即可使用',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey,
+                  ),
                 ),
-              ),
               const Spacer(flex: 3),
-              ElevatedButton(
-                onPressed: _login,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                child: const Text(
-                  '手机号一键登录',
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
-              ),
-              const SizedBox(height: 16),
-              OutlinedButton(
-                onPressed: () {},
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  side: const BorderSide(color: Colors.grey),
-                ),
-                child: const Text(
-                  '其他帐号登录',
-                  style: TextStyle(fontSize: 18, color: Colors.black),
-                ),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: _showOtherLogin ? _buildOtherLoginView() : _buildOneClickLoginView(),
               ),
               const Spacer(flex: 1),
               Row(
