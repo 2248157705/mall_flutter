@@ -53,20 +53,33 @@ class _LoginPageState extends State<LoginPage> {
 
   void _login() async {
     try {
-      final request = LoginRequest(username: '13974371029', code: '2025');
+      LoginRequest request;
+      if (_showOtherLogin) {
+        request = LoginRequest(
+          username: _usernameController.text,
+          code: _passwordController.text, // Assuming 'code' field is used for password in this flow
+        );
+      } else {
+        request = LoginRequest(username: '13974371029', code: '2025');
+      }
+
       final response = await _loginService.login(request);
       
+      // Save the token
       Provider.of<UserProvider>(context, listen: false).setToken(response.data.token);
 
+      // Navigate to HomePage
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomePage()),
       );
     } on DioError catch (e) {
+      // Handle Dio-specific errors
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login failed: ${e.message}')),
       );
     } catch (e) {
+      // Handle other errors
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('An unexpected error occurred: $e')),
       );
