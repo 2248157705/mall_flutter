@@ -245,7 +245,9 @@ class InquiryPage extends StatelessWidget {
                 children: [
                   Text(title, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8.0),
-                  Row(
+                  Wrap( // Changed from Row to Wrap to handle tag overflow
+                    spacing: 8.0, // space between adjacent chips
+                    runSpacing: 4.0, // space between lines
                     children: tags.map((tag) => Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                       margin: const EdgeInsets.only(right: 8.0),
