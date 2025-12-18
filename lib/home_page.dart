@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_app/user_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -8,11 +9,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 4;
 
   static final List<Widget> _widgetOptions = <Widget>[
     const InquiryPage(),
-    const ProfilePage(),
+    const Center(child: Text('报价')),
+    const Center(child: Text('成交')),
+    const Center(child: Text('数据')),
+    const UserPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -26,18 +30,30 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '询价',
+            icon: Icon(Icons.home_outlined),
+            label: '首页',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.list_alt_outlined),
+            label: '报价',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.handshake_outlined),
+            label: '成交',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.data_usage_outlined),
+            label: '数据',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
             label: '我的',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
         onTap: _onItemTapped,
       ),
     );
@@ -238,19 +254,6 @@ class InquiryPage extends StatelessWidget {
             child: const Text('询价', style: TextStyle(color: Colors.blue)),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('我的'),
       ),
     );
   }
