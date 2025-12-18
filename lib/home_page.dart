@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_app/deals_page.dart';
 import 'package:login_app/detail_page.dart';
 import 'package:login_app/quotation_page.dart';
 import 'package:login_app/user_page.dart';
@@ -16,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   static final List<Widget> _widgetOptions = <Widget>[
     const InquiryPage(),
     const Center(child: Text('报价')),
-    const Center(child: Text('成交')),
+    const DealsPage(),
     const Center(child: Text('数据')),
     const UserPage(),
   ];
