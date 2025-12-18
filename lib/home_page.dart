@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:login_app/detail_page.dart';
+import 'package:login_app/quotation_page.dart';
 import 'package:login_app/user_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -210,10 +211,17 @@ class InquiryPage extends StatelessWidget {
   Widget _buildProductItem(BuildContext context, String imageUrl, String title, List<String> tags) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const DetailPage()),
-        );
+        if (title == 'STM32F103VET6') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const QuotationPage()),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const DetailPage()),
+          );
+        }
       },
       child: Padding(
         padding: const EdgeInsets.all(16.0),
