@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+
 import 'package:login_app/deals_page.dart';
-import 'package:login_app/detail_page.dart';
 import 'package:login_app/quotation_page.dart';
 import 'package:login_app/user_page.dart';
 
@@ -31,13 +32,16 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _widgetOptions.elementAt(_selectedIndex),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _widgetOptions,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: '首页',
+            icon: Icon(Icons.request_quote_outlined),
+            label: '询价',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list_alt_outlined),
@@ -57,132 +61,139 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
         currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),
     );
   }
 }
 
-class InquiryPage extends StatelessWidget {
+class InquiryPage extends StatefulWidget {
   const InquiryPage({super.key});
+
+  @override
+  State<InquiryPage> createState() => _InquiryPageState();
+}
+
+class _InquiryPageState extends State<InquiryPage> with TickerProviderStateMixin {
+  late TabController _tabController;
+  final List<String> _tabs = ['全部', '苹果', '华为', '小米', '三星'];
+  String _selectedSort = '默认排序';
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: _tabs.length, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
-        title: const Text('询价', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.white,
         elevation: 0,
+        leading: const Icon(Icons.arrow_back_ios, color: Colors.black),
+        title: const Text('询价', style: TextStyle(color: Colors.black)),
+        centerTitle: true,
         actions: [
-          IconButton(
-            icon: Image.asset('assets/images/home/sort.png', width: 24, height: 24),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: ListView(
-        children: [
-          _buildSearch(),
-          _buildIconGrid(),
-          _buildHotSelling(),
-          _buildProductList(context),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSearch() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
-      color: Colors.white,
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              child: Row(
-                children: [
-                  Image.asset('assets/images/home/search.png', width: 20, height: 20),
-                  const SizedBox(width: 8),
-                  const Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: '请输入您要查询的型号',
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+          Container(
+            margin: const EdgeInsets.only(right: 16.0),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.shade300),
+              borderRadius: BorderRadius.circular(20),
             ),
-          ),
-          const SizedBox(width: 16.0),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            child: Row(
+              children: [
+                const SizedBox(width: 8),
+                const Icon(Icons.more_horiz, color: Colors.black, size: 20),
+                const SizedBox(width: 4),
+                Container(width: 1, height: 12, color: Colors.grey.shade300),
+                const SizedBox(width: 4),
+                const Icon(Icons.track_changes, color: Colors.black, size: 20),
+                const SizedBox(width: 8),
+              ],
             ),
-            child: const Text('搜索', style: TextStyle(fontSize: 16)),
-          ),
+          )
         ],
-      ),
-    );
-  }
-
-  Widget _buildIconGrid() {
-    return Container(
-      color: Colors.white,
-      padding: const EdgeInsets.symmetric(vertical: 20.0),
-      margin: const EdgeInsets.only(top: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildIconGridItem(Icons.calculate_outlined, 'BOM配单', Colors.orange),
-          _buildIconGridItem(Icons.history_outlined, '询价历史', Colors.blue),
-          _buildIconGridItem(Icons.list_alt_outlined, '我的订单', Colors.green),
-          _buildIconGridItem(Icons.headset_mic_outlined, '联系我们', Colors.purple),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildIconGridItem(IconData icon, String label, Color color) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(icon, size: 30.0, color: color),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: _tabs.map((String name) => Tab(text: name)).toList(),
+          isScrollable: true,
+          labelColor: Colors.blue,
+          unselectedLabelColor: Colors.black,
+          indicatorColor: Colors.blue,
         ),
-        const SizedBox(height: 8.0),
-        Text(label, style: const TextStyle(fontSize: 14)),
-      ],
+      ),
+      body: Column(
+        children: [
+          _buildFilterChips(),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: _tabs.map((String name) {
+                return _buildInquiryList();
+              }).toList(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _buildHotSelling() {
+  Widget _buildFilterChips() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      color: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+      child: Column(
         children: [
-          const Text('热卖型号', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+          SizedBox(
+            height: 30,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                _buildChip('全部', isSelected: true, isBlue: true),
+                _buildChip('KA'),
+                _buildChip('权益'),
+                _buildChip('HW单'),
+                _buildChip('XM单'),
+                _buildChip('价格维护'),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
           Row(
-            children: const [
-              Text('更多', style: TextStyle(color: Colors.grey)),
-              Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: 30,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                       _buildChip('待报价', isSelected: true),
+                       _buildChip('已报价未截标'),
+                       _buildChip('已报价已截标'),
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () => _showSortMenu(context),
+                child: Row(
+                  children: [
+                    const SizedBox(width: 8),
+                    Text(_selectedSort, style: const TextStyle(color: Colors.blue)),
+                    const Icon(Icons.swap_vert, color: Colors.blue),
+                  ],
+                ),
+              )
             ],
           ),
         ],
@@ -190,91 +201,193 @@ class InquiryPage extends StatelessWidget {
     );
   }
 
-  Widget _buildProductList(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        children: [
-          _buildProductItem(context, 'assets/images/home/1.png', 'STM32F103C8T6', ['最小包装', '2000']),
-          const Divider(height: 1, indent: 16, endIndent: 16),
-          _buildProductItem(context, 'assets/images/home/3.png', 'STM32F103VET6', ['最小包装', '600']),
-          const Divider(height: 1, indent: 16, endIndent: 16),
-          _buildProductItem(context, 'assets/images/home/5.png', 'GD32F303CCT6', ['最小包装', '2000']),
-        ],
+  Widget _buildChip(String label, {bool isSelected = false, bool isBlue = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      child: ChoiceChip(
+        label: Text(label),
+        selected: isSelected,
+        onSelected: (bool selected) {},
+        backgroundColor: Colors.grey[200],
+        selectedColor: isBlue ? Colors.blue : Colors.blue.withOpacity(0.1),
+        labelStyle: TextStyle(
+          color: isSelected ? (isBlue ? Colors.white : Colors.blue) : Colors.black,
+          fontSize: 12,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+          side: BorderSide(
+            color: isSelected ? (isBlue ? Colors.blue : Colors.blue) : Colors.transparent,
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
       ),
     );
   }
 
-  Widget _buildProductItem(BuildContext context, String imageUrl, String title, List<String> tags) {
-    return GestureDetector(
-      onTap: () {
-        if (title == 'STM32F103VET6') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const QuotationPage()),
-          );
-        } else {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const DetailPage()),
-          );
-        }
+  void _showSortMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return Container(
+          margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Wrap(
+            children: <Widget>[
+              _buildSortOption('默认排序'),
+              const Divider(height: 1),
+              _buildSortOption('截标时间由远到近'),
+              const Divider(height: 1),
+              _buildSortOption('截标时间由近到远'),
+            ],
+          ),
+        );
       },
+    );
+  }
+
+  Widget _buildSortOption(String title) {
+     return ListTile(
+      title: Center(
+        child: Text(
+          title,
+          style: TextStyle(
+            color: _selectedSort == title ? Colors.blue : Colors.black,
+          ),
+        ),
+      ),
+      onTap: () {
+        setState(() {
+          _selectedSort = title;
+        });
+        Navigator.pop(context);
+      },
+    );
+  }
+
+  Widget _buildInquiryList() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(8.0),
+      itemCount: 3,
+
+      itemBuilder: (context, index) {
+        return GestureDetector(onTap: (){
+          // Navigator.push(context, MaterialPageRoute(builder: (context) => const DealsPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const QuotationPage()));
+        },child:  _buildCardItem());
+      },
+    );
+  }
+
+  Widget _buildCardItem() {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+      margin: const EdgeInsets.symmetric(vertical: 6.0),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: Image.asset(
-                imageUrl,
-                width: 80.0,
-                height: 80.0,
-                fit: BoxFit.cover,
-                errorBuilder: (c, o, s) => Image.asset('assets/images/home/no-image.png', width: 80.0, height: 80.0),
-              ),
-            ),
-            const SizedBox(width: 16.0),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 8.0),
-                  Wrap( // Changed from Row to Wrap to handle tag overflow
-                    spacing: 8.0, // space between adjacent chips
-                    runSpacing: 4.0, // space between lines
-                    children: tags.map((tag) => Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                      margin: const EdgeInsets.only(right: 8.0),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
-                      child: Text(tag, style: const TextStyle(color: Colors.black54)),
-                    )).toList(),
-                  ),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue.withOpacity(0.1),
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('iPhone11 Pro', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                Row(
+                  children: [
+                    _buildCountdownTimer(),
+                    const SizedBox(width: 4),
+                    const Text('后结束', style: TextStyle(color: Colors.grey)),
+                  ],
                 ),
-              ),
-              child: const Text('询价', style: TextStyle(color: Colors.blue)),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: Colors.grey[200],
+                  ),
+                  child: const Icon(Icons.image, color: Colors.grey, size: 40),
+                ),
+                const SizedBox(width: 12),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('IMEI: 5402314654992', style: TextStyle(color: Colors.grey)),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        _buildTag('KA', Colors.orange),
+                        const SizedBox(width: 8),
+                        _buildTag('权益', Colors.blue),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('2025-09-22 18:36:49', style: TextStyle(color: Colors.grey, fontSize: 12)),
+                OutlinedButton(
+                  onPressed: () {},
+                  child: const Text('查看详情', style: TextStyle(color: Colors.grey)),
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: Colors.grey.shade300),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
       ),
+    );
+  }
+  
+   Widget _buildTag(String text, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Text(text, style: TextStyle(color: color, fontSize: 12)),
+    );
+  }
+
+  Widget _buildCountdownTimer() {
+    return Row(
+      children: [
+        _buildTimeBox('00'),
+        const Text(' : ', style: TextStyle(fontWeight: FontWeight.bold)),
+        _buildTimeBox('00'),
+        const Text(' : ', style: TextStyle(fontWeight: FontWeight.bold)),
+        _buildTimeBox('46'),
+      ],
+    );
+  }
+
+  Widget _buildTimeBox(String time) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Text(time, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
     );
   }
 }
