@@ -17,6 +17,6 @@ Dio buildDioClient(String baseUrl) {
   final dio = Dio();
   dio.options.baseUrl = baseUrl;
   // If you want to see request logs, uncomment the following line
-  // dio.interceptors.add(LogInterceptor(responseBody: true));
+  dio.interceptors.add(LogInterceptor(responseBody: true));
   return dio;
 }

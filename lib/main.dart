@@ -63,36 +63,35 @@ class _LoginPageState extends State<LoginPage> {
         request = LoginRequest(username: '13974371029', code: '2025');
       }
 
+      print('Login Request: ${request.toJson()}');
+
       final response = await _loginService.login(request);
+      print('Login Response: ${response.toJson()}');
 
-      if (response.success) {
-        if (response.data != null) {
-          // Save the token
-          Provider.of<UserProvider>(context, listen: false)
-              .setToken(response.data!.token);
+      if (response.data != null) {
+        // Save the token
+        Provider.of<UserProvider>(context, listen: false)
+            .setToken(response.data!.token);
 
-          // Navigate to HomePage
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const HomePage()),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Login failed: response data is null')),
-          );
-        }
+        // Navigate to HomePage
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login failed: ${response.code}')),
+          const SnackBar(content: Text('Login failed: response data is null')),
         );
       }
     } on DioError catch (e) {
       // Handle Dio-specific errors
+      print('DioError response data: ${e.response?.data}');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login failed: ${e.message}')),
       );
     } catch (e) {
       // Handle other errors
+      print('An unexpected error occurred: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('An unexpected error occurred: $e')),
       );
