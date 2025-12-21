@@ -8,7 +8,8 @@ import 'package:login_app/store/user_provider.dart';
 import 'package:login_app/model/order_detail.dart';
 
 class DetailPage extends StatefulWidget {
-  const DetailPage({super.key});
+  final int orderId;
+  const DetailPage({super.key, required this.orderId});
 
   @override
   _DetailPageState createState() => _DetailPageState();
@@ -30,8 +31,7 @@ class _DetailPageState extends State<DetailPage> {
 
   void _fetchOrderDetail() async {
     try {
-      // final response = await _orderDetailService.getOrderDetail(1179);
-      final response = await _orderDetailService.getOrderDetail(992);
+      final response = await _orderDetailService.getOrderDetail(widget.orderId);
       
       if (response.data != null) {
         setState(() {

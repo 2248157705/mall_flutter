@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:login_app/detail_page.dart';
 
 class DealsPage extends StatefulWidget {
   const DealsPage({super.key});
@@ -112,76 +112,89 @@ class _DealsPageState extends State<DealsPage> with SingleTickerProviderStateMix
   }
 
   Widget _buildDealItem(String title, String? status, String price, String storage, String type, String quote, String? quoter) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                Row(
-                  children: [
-                    if (status != null)
-                      Text(status, style: const TextStyle(color: Colors.green)),
-                    const SizedBox(width: 8),
-                    Text(price, style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Image.asset('assets/images/customer/1.png', width: 80, height: 80),
-                const SizedBox(width: 16),
-                Expanded( // Wrap the column in Expanded
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => DetailPage(orderId: 1179)),
+        );
+      },
+      child: Card(
+        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  Row(
                     children: [
-                      Text(storage),
-                      const SizedBox(height: 8),
-                      Wrap( // Use Wrap to prevent overflow of tags
-                        spacing: 8.0,
-                        runSpacing: 4.0,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: Colors.orange.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Text(type, style: const TextStyle(color: Colors.orange)),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: Colors.blue.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Text(quote, style: const TextStyle(color: Colors.blue)),
-                          ),
-                        ],
-                      ),
+                      if (status != null)
+                        Text(status, style: const TextStyle(color: Colors.green)),
+                      const SizedBox(width: 8),
+                      Text(price, style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
                     ],
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                if (quoter != null) Text('报价师: $quoter', style: const TextStyle(color: Colors.grey)),
-                OutlinedButton(
-                  onPressed: () {},
-                  child: const Text('查看详情'),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Image.asset('assets/images/customer/1.png', width: 80, height: 80),
+                  const SizedBox(width: 16),
+                  Expanded( // Wrap the column in Expanded
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(storage),
+                        const SizedBox(height: 8),
+                        Wrap( // Use Wrap to prevent overflow of tags
+                          spacing: 8.0,
+                          runSpacing: 4.0,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.orange.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(type, style: const TextStyle(color: Colors.orange)),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.blue.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(quote, style: const TextStyle(color: Colors.blue)),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  if (quoter != null) Text('报价师: $quoter', style: const TextStyle(color: Colors.grey)),
+                  OutlinedButton(
+                    onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DetailPage(orderId: 1179)),
+                        );
+                    },
+                    child: const Text('查看详情'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
