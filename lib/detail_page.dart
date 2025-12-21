@@ -1,11 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:provider/provider.dart'; // Added
+import 'package:provider/provider.dart';
 import 'package:login_app/service/api_client.dart';
 import 'package:login_app/service/order_api_client.dart';
-import 'package:login_app/model/order_detail_request.dart';
-import 'package:login_app/store/user_provider.dart'; // Added
+import 'package:login_app/store/user_provider.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({super.key});
@@ -17,12 +16,11 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage> {
   Map<String, dynamic>? orderInfo;
   late final OrderDetailService _orderDetailService;
-  late final Dio _dio; // Changed to late final
+  late final Dio _dio;
 
   @override
   void initState() {
     super.initState();
-    // Initialize _dio here after context is available to access UserProvider
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     _dio = buildDioClient("https://testenv.huanjintech.com/api/gtw/xgj-mall-api/", token: userProvider.token);
     _orderDetailService = OrderDetailService(_dio);
@@ -31,8 +29,7 @@ class _DetailPageState extends State<DetailPage> {
 
   void _fetchOrderDetail() async {
     try {
-      final request = OrderDetailRequest(orderId: 1634);
-      final response = await _orderDetailService.getOrderDetail(request);
+      final response = await _orderDetailService.getOrderDetail(1179);
       
       if (response.data != null) {
         setState(() {
@@ -41,7 +38,6 @@ class _DetailPageState extends State<DetailPage> {
         print('Order Info: $orderInfo');
       } else {
         print('Order detail data is null in response.');
-        // Optionally show a SnackBar or other UI feedback
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Failed to load order details: data is empty')),
         );

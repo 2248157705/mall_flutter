@@ -12,7 +12,8 @@ abstract class LoginService {
   @Headers(<String, dynamic>{
     "Content-Type": "application/x-www-form-urlencoded",
     "Referer": "https://servicewechat.com/wxc293f903839b892e/devtools/page-frame.html",
-    "saas-tenant-code": "MAN_HAO_DE"
+    // "saas-tenant-code": "MAN_HAO_DE"
+    "saas-tenant-code": "HUAN_JIN"
   })
   @POST("/login-by-mobile")
   Future<LoginResponse> login(@Body() LoginRequest request);
@@ -31,6 +32,6 @@ Dio buildDioClient(String baseUrl, {String? token}) {
     ));
   }
   
-  dio.interceptors.add(LogInterceptor(requestHeader: true, responseBody: true));
+  dio.interceptors.add(LogInterceptor(requestHeader: true, requestBody: true, responseBody: true));
   return dio;
 }

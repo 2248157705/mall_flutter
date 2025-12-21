@@ -9,11 +9,7 @@ part 'order_api_client.g.dart';
 abstract class OrderDetailService {
   factory OrderDetailService(Dio dio, {String baseUrl}) = _OrderDetailService;
 
-  @Headers(<String, dynamic>{
-    "Content-Type": "application/x-www-form-urlencoded",
-  })
   @POST("/t-customer-order/query-detail")
-  Future<OrderDetailResponse> getOrderDetail(
-    @Body() OrderDetailRequest request,
-  );
+  @FormUrlEncoded()
+  Future<OrderDetailResponse> getOrderDetail(@Field("orderId") int orderId);
 }

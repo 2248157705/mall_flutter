@@ -21,17 +21,17 @@ class _OrderDetailService implements OrderDetailService {
   String? baseUrl;
 
   @override
-  Future<OrderDetailResponse> getOrderDetail(OrderDetailRequest request) async {
+  Future<OrderDetailResponse> getOrderDetail(int orderId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(request.toJson());
+    final _data = {'orderId': orderId};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<OrderDetailResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: 'application/x-www-form-urlencoded',
     )
             .compose(
               _dio.options,
