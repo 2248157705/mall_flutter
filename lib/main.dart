@@ -64,6 +64,7 @@ class _LoginPageState extends State<LoginPage> {
       }
 
       final response = await _loginService.login(request);
+      print('Order Info: $response');
       
       // Save the token
       Provider.of<UserProvider>(context, listen: false).setToken(response.data.token);
@@ -160,6 +161,7 @@ class _LoginPageState extends State<LoginPage> {
         const SizedBox(height: 24),
         ElevatedButton(
           onPressed: () {
+            _login();
             // Implement login with username and password
           },
           style: ElevatedButton.styleFrom(

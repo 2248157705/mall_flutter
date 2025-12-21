@@ -31,18 +31,18 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  dio: ^5.4.3+1 # For making HTTP requests
-  retrofit: ^4.0.0 # For type-safe HTTP client generation
-  json_annotation: ^4.9.0 # For JSON serialization annotations
-  provider: ^6.1.2 # Existing provider dependency
+  dio: ^5.0.0 # Let pub choose latest compatible
+  retrofit: ^4.0.0 # Let pub choose latest compatible
+  json_annotation: ^4.0.0 # Let pub choose latest compatible
+  provider: ^6.0.0 # Let pub choose latest compatible
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^6.0.0 # Existing lints dependency
-  build_runner: ^2.4.9 # For running code generators
-  json_serializable: ^6.8.0 # For generating JSON serialization code
-  retrofit_generator: ^7.0.0 # For generating Retrofit client code
+  flutter_lints: ^3.0.0 # Let pub choose latest compatible
+  build_runner: ^2.0.0 # Let pub choose latest compatible
+  json_serializable: ^6.0.0 # Let pub choose latest compatible
+  retrofit_generator: ^7.0.0 # Let pub choose latest compatible
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

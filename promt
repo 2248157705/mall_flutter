@@ -1,0 +1,18 @@
+角色：Flutter 架构师。
+背景：我正在完善main.dart 的登录功能。
+任务：请使用 Dio + Retrofit实现登录状态管理和封装网络请求。必须在App里面正常运行
+需求：
+1 定义一个 User 模型（包含 id(长整型), username(字符串类型), realName(字符串类型), phone(字符串类型),token(字符串类型)，mainAccount（布尔类型）。
+2 定义一个 LoginService 包含login 方法， 点击之后调用 post 请求 url:https://testenv.xinguojun.cn/api/gtw/xgj-mall-api/login-by-mobile 入参为{username:13974371029,code:2025} ,登录成功之后把token 保存在全局状态管理中
+
+
+角色：Flutter 架构师。
+任务：一进入detail_page.dart页面 立即 post请求 https://testenv.huanjintech.com/api/gtw/xgj-mall-api/t-customer-order/query-detail 接口，入参{orderId：1833} ，把请求结果放到页面变量 orderInfo,并在控制台打印orderInfo，以方便调试
+需求：
+
+
+
+      Navigator.pushReplacement(                                                                   │
+│  78 -                     context,                                                                                   │
+│  79 -                     MaterialPageRoute(builder: (context) => const HomePage()),                                 │
+│  80 -                   );

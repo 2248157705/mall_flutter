@@ -1,8 +1,43 @@
 
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'package:login_app/service/api_client.dart';
+import 'package:login_app/service/order_api_client.dart';
+import 'package:login_app/model/order_detail_request.dart';
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
   const DetailPage({super.key});
+
+  @override
+  _DetailPageState createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
+  Map<String, dynamic>? orderInfo;
+  late final OrderDetailService _orderDetailService;
+  final Dio _dio = buildDioClient("https://testenv.huanjintech.com/api/gtw/xgj-mall-api/");
+
+  @override
+  void initState() {
+    super.initState();
+    _orderDetailService = OrderDetailService(_dio);
+    _fetchOrderDetail();
+  }
+
+  void _fetchOrderDetail() async {
+    try {
+      final request = OrderDetailRequest(orderId: 1833);
+      final response = await _orderDetailService.getOrderDetail(request);
+      setState(() {
+        orderInfo = response.data;
+      });
+      print('Order Info: $orderInfo');
+    } on DioError catch (e) {
+      print('Error fetching order detail: ${e.message}');
+    } catch (e) {
+      print('An unexpected error occurred: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,17 +49,19 @@ class DetailPage extends StatelessWidget {
           IconButton(onPressed: () {}, icon: const Icon(Icons.remove_red_eye_outlined)),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildAddressSection(),
-            _buildShopSection(),
-            _buildOrderReportSection(),
-            _buildOrderDetailSection(),
-          ],
-        ),
-      ),
+      body: orderInfo == null
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildAddressSection(),
+                  _buildShopSection(),
+                  _buildOrderReportSection(),
+                  _buildOrderDetailSection(),
+                ],
+              ),
+            ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
@@ -108,7 +145,7 @@ class DetailPage extends StatelessWidget {
               children: [
                 const Icon(Icons.info, color: Colors.orange),
                 const SizedBox(width: 8),
-                const Expanded(child: Text('店员备注: 正常开机进入桌面; 苹果 iCloud 账户可退出; 无维修情况;')),
+                const Expanded(child: Text('店员备注: 正常开机进入桌面; 苹果 iCloud 账户可退出; 无维修情况;')), 
               ],
             ),
           ),
