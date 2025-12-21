@@ -12,8 +12,7 @@ abstract class LoginService {
   @Headers(<String, dynamic>{
     "Content-Type": "application/x-www-form-urlencoded",
     "Referer": "https://servicewechat.com/wxc293f903839b892e/devtools/page-frame.html",
-    // "saas-tenant-code": "MAN_HAO_DE"
-    "saas-tenant-code": "HUAN_JIN"
+    "saas-tenant-code": "MAN_HAO_DE"
   })
   @POST("/login-by-mobile")
   Future<LoginResponse> login(@Body() LoginRequest request);

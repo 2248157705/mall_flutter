@@ -1,10 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:login_app/model/order_detail.dart';
 
 part 'order_detail_response.g.dart';
 
 @JsonSerializable()
 class OrderDetailResponse {
-  final Map<String, dynamic>? data;
+  final OrderDetail? data;
 
   OrderDetailResponse({this.data});
 

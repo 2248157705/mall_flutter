@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:login_app/service/api_client.dart';
 import 'package:login_app/service/order_api_client.dart';
 import 'package:login_app/store/user_provider.dart';
+import 'package:login_app/model/order_detail.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({super.key});
@@ -14,7 +15,7 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  Map<String, dynamic>? orderInfo;
+  OrderDetail? orderInfo;
   late final OrderDetailService _orderDetailService;
   late final Dio _dio;
 
@@ -29,7 +30,8 @@ class _DetailPageState extends State<DetailPage> {
 
   void _fetchOrderDetail() async {
     try {
-      final response = await _orderDetailService.getOrderDetail(1179);
+      // final response = await _orderDetailService.getOrderDetail(1179);
+      final response = await _orderDetailService.getOrderDetail(992);
       
       if (response.data != null) {
         setState(() {
@@ -106,9 +108,9 @@ class _DetailPageState extends State<DetailPage> {
             children: [
               const Icon(Icons.local_shipping, color: Colors.orange),
               const SizedBox(width: 8),
-              const Text('已代签收', style: TextStyle(color: Colors.orange)),
+              Text(orderInfo?.orderStatus == 20 ? '已代签收' : '运输中', style: const TextStyle(color: Colors.orange)),
               const SizedBox(width: 8),
-              const Expanded(child: Text('经客户同意, 快递已放在 (南山区软件...)', overflow: TextOverflow.ellipsis)),
+              Expanded(child: Text('经客户同意, 快递已放在 (${orderInfo?.receiveAddress ?? ''})', overflow: TextOverflow.ellipsis)),
               const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
             ],
           ),
@@ -117,13 +119,13 @@ class _DetailPageState extends State<DetailPage> {
             children: [
               const Text('默认', style: TextStyle(color: Colors.red)),
               const SizedBox(width: 8),
-              const Text('广东省 深圳市 南山区', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('${orderInfo?.receiveProvince ?? ''} ${orderInfo?.receiveCity ?? ''} ${orderInfo?.receiveArea ?? ''}', style: const TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
           const SizedBox(height: 8),
-          const Text('软件园二期十一栋602', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          Text(orderInfo?.receiveAddress ?? '', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
-          const Text('用户名 175****4231', style: TextStyle(color: Colors.grey)),
+          Text('${orderInfo?.receiveName ?? ''} ${orderInfo?.receivePhone ?? ''}', style: const TextStyle(color: Colors.grey)),
         ],
       ),
     );
@@ -138,7 +140,7 @@ class _DetailPageState extends State<DetailPage> {
         children: [
           const Icon(Icons.store, color: Colors.blue),
           const SizedBox(width: 8),
-          const Text('小米之家浙江绍兴越城区胜利东路世贸广场专卖店', style: TextStyle(fontWeight: FontWeight.bold)),
+          Expanded(child: Text(orderInfo?.customerName ?? 'N/A', style: const TextStyle(fontWeight: FontWeight.bold))),
         ],
       ),
     );
@@ -162,13 +164,13 @@ class _DetailPageState extends State<DetailPage> {
               children: [
                 const Icon(Icons.info, color: Colors.orange),
                 const SizedBox(width: 8),
-                const Expanded(child: Text('店员备注: 正常开机进入桌面; 苹果 iCloud 账户可退出; 无维修情况;')), 
+                Expanded(child: Text('店员备注: ${orderInfo?.orderRemark ?? ''}')), 
               ],
             ),
           ),
           const Text('店员选项', style: TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
-          const Text('外观细微划痕, 无磕碰 | 屏幕轻微使用痕迹 | NFC正常 | 震动正常 | 闪光灯正常 | 重力感应正常'),
+          Text(orderInfo?.reviewOrderAuditReportList?.map((e) => e.optionName).join(' | ') ?? 'N/A'),
           const SizedBox(height: 16),
           const Text('顾客拍照', style: TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
@@ -197,15 +199,15 @@ class _DetailPageState extends State<DetailPage> {
           const Text('订单详情', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
           _buildDetailRow('发货类型', '门店自取'),
-          _buildDetailRow('报价金额', '¥3600', valueColor: Colors.red),
-          _buildDetailRow('快递费', '¥6', valueColor: Colors.red),
-          _buildDetailRow('快递单号', '95040144789', copyable: true),
-          _buildDetailRow('实付金额', '¥3606', valueColor: Colors.red),
-          _buildDetailRow('付款状态', '已付款'),
-          _buildDetailRow('机型', 'iPhone 14Pro'),
-          _buildDetailRow('skuid', '564dv545qs1877455fg1as84s1fd47'),
-          _buildDetailRow('imei', '879514014445454412', copyable: true),
-          _buildDetailRow('订单条码', 'BO20251018878225484122', copyable: true),
+          _buildDetailRow('报价金额', '¥${orderInfo?.quoteAmount ?? 0}', valueColor: Colors.red),
+          _buildDetailRow('快递费', '¥${orderInfo?.payAmount?.toStringAsFixed(2) ?? 0}', valueColor: Colors.red),
+          _buildDetailRow('快递单号', orderInfo?.logisticsSendCount.toString() ?? 'N/A', copyable: true),
+          _buildDetailRow('实付金额', '¥${orderInfo?.dealAmount ?? 0}', valueColor: Colors.red),
+          _buildDetailRow('付款状态', orderInfo?.payStatus == 20 ? '已付款' : '未付款'),
+          _buildDetailRow('机型', orderInfo?.itemName ?? 'N/A'),
+          _buildDetailRow('skuid', orderInfo?.skuId ?? 'N/A'),
+          _buildDetailRow('imei', orderInfo?.imei ?? 'N/A', copyable: true),
+          _buildDetailRow('订单条码', orderInfo?.orderCode ?? 'N/A', copyable: true),
         ],
       ),
     );

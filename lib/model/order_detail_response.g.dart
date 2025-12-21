@@ -8,7 +8,9 @@ part of 'order_detail_response.dart';
 
 OrderDetailResponse _$OrderDetailResponseFromJson(Map<String, dynamic> json) =>
     OrderDetailResponse(
-      data: json['data'] as Map<String, dynamic>?,
+      data: json['data'] == null
+          ? null
+          : OrderDetail.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$OrderDetailResponseToJson(

@@ -15,6 +15,49 @@
 登录接口的url为：https://testenv.huanjintech.com/api/gtw/xgj-mall-api/login-by-mobile
 
 
+域名 https://testenv.huanjintech.com/api/gtw/xgj-mall-api/login-by-mobile 是正确的，但是dio 提示域名解析失败，原因有哪些
+
+
+为futter 项目配置网络权限
+
+
+
+修改登录请求，
+1 添加请求头content-type= application/x-www-form-urlencoded
+2 添加请求头referer=https://servicewechat.com/wxc293f903839b892e/devtools/page-frame.html
+3 添加请求头 saas-tenant-code=MAN_HAO_DE
+  [{"key":"content-type","value":"application/x-www-form-urlencoded","description":"","type":"default","enabled":true}]
+4 请求入参为
+
+
+
+在detail_page.dart 文件 _fetchOrderDetail 方法里面，在调用_orderDetailService.getOrderDetail 之前，首先打印应用程序登录token在控制台上
+
+_orderDetailService.getOrderDetail 添加请求头 Authorization 值为登录token
+
+保留调试语句
+
+修改 _orderDetailService.getOrderDetail 请求
+1 添加请求头content-type= application/x-www-form-urlencoded
+2 入参为 orderId
+3 将完整请求信息打印在控制台上
+
+服务端没有接收到 orderId 参数，检查post 请求及content-type 是否正常，并把请求入参打印在控制台上方便调试
+
+日志里面请求body有没有orderId 参数
+
+
+运行应用，将_orderDetailService.getOrderDetail() 接口返回json 生成对应订单模型
+
+
+运行应用，将_orderDetailService.getOrderDetail() 接口返回成功json 打印在控制台上
+
+
+
+
+
+
+
 
       Navigator.pushReplacement(                                                                   │
 │  78 -                     context,                                                                                   │
