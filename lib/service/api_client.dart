@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
 import 'package:login_app/model/login_request.dart';
 import 'package:login_app/model/login_response.dart';
@@ -9,6 +9,11 @@ part 'api_client.g.dart';
 abstract class LoginService {
   factory LoginService(Dio dio, {String baseUrl}) = _LoginService;
 
+  @Headers(<String, dynamic>{
+    "Content-Type": "application/x-www-form-urlencoded",
+    "Referer": "https://servicewechat.com/wxc293f903839b892e/devtools/page-frame.html",
+    "saas-tenant-code": "MAN_HAO_DE"
+  })
   @POST("/login-by-mobile")
   Future<LoginResponse> login(@Body() LoginRequest request);
 }

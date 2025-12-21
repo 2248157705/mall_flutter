@@ -24,7 +24,13 @@ class _LoginService implements LoginService {
   Future<LoginResponse> login(LoginRequest request) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': 'application/x-www-form-urlencoded',
+      r'Referer':
+          'https://servicewechat.com/wxc293f903839b892e/devtools/page-frame.html',
+      r'saas-tenant-code': 'MAN_HAO_DE',
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
     final _result = await _dio
@@ -32,6 +38,7 @@ class _LoginService implements LoginService {
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: 'application/x-www-form-urlencoded',
     )
             .compose(
               _dio.options,
