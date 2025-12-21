@@ -1,9 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:provider/provider.dart'; // Added
 import 'package:login_app/service/api_client.dart';
 import 'package:login_app/service/order_api_client.dart';
 import 'package:login_app/model/order_detail_request.dart';
+import 'package:login_app/store/user_provider.dart'; // Added
 
 class DetailPage extends StatefulWidget {
   const DetailPage({super.key});
@@ -15,27 +17,46 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage> {
   Map<String, dynamic>? orderInfo;
   late final OrderDetailService _orderDetailService;
-  final Dio _dio = buildDioClient("https://testenv.huanjintech.com/api/gtw/xgj-mall-api/");
+  late final Dio _dio; // Changed to late final
 
   @override
   void initState() {
     super.initState();
+    // Initialize _dio here after context is available to access UserProvider
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    _dio = buildDioClient("https://testenv.huanjintech.com/api/gtw/xgj-mall-api/", token: userProvider.token);
     _orderDetailService = OrderDetailService(_dio);
     _fetchOrderDetail();
   }
 
   void _fetchOrderDetail() async {
     try {
-      final request = OrderDetailRequest(orderId: 1833);
+      final request = OrderDetailRequest(orderId: 1634);
       final response = await _orderDetailService.getOrderDetail(request);
-      setState(() {
-        orderInfo = response.data;
-      });
-      print('Order Info: $orderInfo');
+      
+      if (response.data != null) {
+        setState(() {
+          orderInfo = response.data;
+        });
+        print('Order Info: $orderInfo');
+      } else {
+        print('Order detail data is null in response.');
+        // Optionally show a SnackBar or other UI feedback
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to load order details: data is empty')),
+        );
+      }
     } on DioError catch (e) {
       print('Error fetching order detail: ${e.message}');
+      print('DioError response data: ${e.response?.data}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error fetching order detail: ${e.message}')),
+      );
     } catch (e) {
       print('An unexpected error occurred: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An unexpected error occurred: $e')),
+      );
     }
   }
 

@@ -18,10 +18,19 @@ abstract class LoginService {
   Future<LoginResponse> login(@Body() LoginRequest request);
 }
 
-Dio buildDioClient(String baseUrl) {
+Dio buildDioClient(String baseUrl, {String? token}) {
   final dio = Dio();
   dio.options.baseUrl = baseUrl;
-  // If you want to see request logs, uncomment the following line
-  dio.interceptors.add(LogInterceptor(responseBody: true));
+
+  if (token != null && token.isNotEmpty) {
+    dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) {
+        options.headers["Authorization"] = "$token";
+        handler.next(options);
+      },
+    ));
+  }
+  
+  dio.interceptors.add(LogInterceptor(requestHeader: true, responseBody: true));
   return dio;
 }
