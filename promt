@@ -12,6 +12,10 @@
 
 
 
+登录接口的url为：https://testenv.huanjintech.com/api/gtw/xgj-mall-api/login-by-mobile
+
+
+
       Navigator.pushReplacement(                                                                   │
 │  78 -                     context,                                                                                   │
 │  79 -                     MaterialPageRoute(builder: (context) => const HomePage()),                                 │

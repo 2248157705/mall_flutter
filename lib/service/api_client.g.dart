@@ -13,7 +13,7 @@ class _LoginService implements LoginService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://testenv.xinguojun.cn/api/gtw/xgj-mall-api/';
+    baseUrl ??= 'https://testenv.huanjintech.com/api/gtw/xgj-mall-api/';
   }
 
   final Dio _dio;

@@ -64,16 +64,28 @@ class _LoginPageState extends State<LoginPage> {
       }
 
       final response = await _loginService.login(request);
-      print('Order Info: $response');
-      
-      // Save the token
-      Provider.of<UserProvider>(context, listen: false).setToken(response.data.token);
 
-      // Navigate to HomePage
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
+      if (response.success) {
+        if (response.data != null) {
+          // Save the token
+          Provider.of<UserProvider>(context, listen: false)
+              .setToken(response.data!.token);
+
+          // Navigate to HomePage
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Login failed: response data is null')),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Login failed: ${response.code}')),
+        );
+      }
     } on DioError catch (e) {
       // Handle Dio-specific errors
       ScaffoldMessenger.of(context).showSnackBar(

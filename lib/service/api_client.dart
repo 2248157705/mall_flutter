@@ -5,7 +5,7 @@ import 'package:login_app/model/login_response.dart';
 
 part 'api_client.g.dart';
 
-@RestApi(baseUrl: "https://testenv.xinguojun.cn/api/gtw/xgj-mall-api/")
+@RestApi(baseUrl: "https://testenv.huanjintech.com/api/gtw/xgj-mall-api/")
 abstract class LoginService {
   factory LoginService(Dio dio, {String baseUrl}) = _LoginService;
 

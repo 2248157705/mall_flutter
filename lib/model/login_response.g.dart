@@ -8,10 +8,16 @@ part of 'login_response.dart';
 
 LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
     LoginResponse(
-      data: User.fromJson(json['data'] as Map<String, dynamic>),
+      code: (json['code'] as num).toInt(),
+      success: json['success'] as bool,
+      data: json['data'] == null
+          ? null
+          : User.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
     <String, dynamic>{
+      'code': instance.code,
+      'success': instance.success,
       'data': instance.data,
     };
