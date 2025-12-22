@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:login_app/deals_page.dart';
 import 'package:login_app/quotation_page.dart';
 import 'package:login_app/user_page.dart';
+import 'package:login_app/data_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,7 +20,7 @@ class _HomePageState extends State<HomePage> {
     const InquiryPage(),
     const Center(child: Text('报价')),
     const DealsPage(),
-    const Center(child: Text('数据')),
+    const DataPage(),
     const UserPage(),
   ];
 
