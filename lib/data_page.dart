@@ -20,7 +20,15 @@ class _DataPageState extends State<DataPage> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: const Icon(Icons.arrow_back_ios, color: Colors.black),
-        title: const Text('数据', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold, fontFamily: 'sans-serif')),
+        title: const Text(
+          '数据',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'sans-serif',
+          ),
+        ),
         centerTitle: true,
         actions: [
           Container(
@@ -40,7 +48,7 @@ class _DataPageState extends State<DataPage> {
                 const SizedBox(width: 8),
               ],
             ),
-          )
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -67,16 +75,29 @@ class _DataPageState extends State<DataPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('核心指标监控', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'sans-serif')),
+              const Text(
+                '核心指标监控',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'sans-serif',
+                ),
+              ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey.shade300),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Row(
                   children: const [
-                    Text('选择报价师', style: TextStyle(fontSize: 12, fontFamily: 'sans-serif')),
+                    Text(
+                      '选择报价师',
+                      style: TextStyle(fontSize: 12, fontFamily: 'sans-serif'),
+                    ),
                     SizedBox(width: 4),
                     Icon(Icons.keyboard_arrow_down, size: 16),
                   ],
@@ -97,17 +118,27 @@ class _DataPageState extends State<DataPage> {
               ),
               TextButton(
                 onPressed: () {},
-                child: const Text('自定义时间', style: TextStyle(color: Colors.blue, fontFamily: 'sans-serif')),
+                child: const Text(
+                  '自定义时间',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontFamily: 'sans-serif',
+                  ),
+                ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          GridView.count(
+          GridView(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 4,
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 16,
+            // 使用这个 Delegate 可以直接写死高度
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 16,
+              mainAxisExtent: 90, // 👈 直接指定每个卡片的高度为 90 像素
+            ),
             children: [
               _buildMetricCard('订单推流', '6093', '+19.85%', Colors.red),
               _buildMetricCard('报价次数', '856', '-10.33%', Colors.green),
@@ -117,6 +148,7 @@ class _DataPageState extends State<DataPage> {
               _buildMetricCard('成交金额', '8696', '+10.25%', Colors.red),
               _buildMetricCard('成交均价', '369', '+26.11%', Colors.red),
               _buildMetricCard('报价效率', '24s', '-15.43%', Colors.green),
+              // ... 其他卡片
             ],
           ),
         ],
@@ -133,62 +165,72 @@ class _DataPageState extends State<DataPage> {
         borderRadius: BorderRadius.circular(16),
       ),
       child: Text(
-            text,
-            style: TextStyle(
-              color: isSelected ? Colors.white : Colors.black,
-              fontSize: 12,
-              fontFamily: 'sans-serif',
-            ),
-          ),
+        text,
+        style: TextStyle(
+          color: isSelected ? Colors.white : Colors.black,
+          fontSize: 12,
+          fontFamily: 'sans-serif',
+        ),
+      ),
     );
   }
 
-  Widget _buildMetricCard(String title, String value, String change, Color changeColor) {
+  Widget _buildMetricCard(
+    String title,
+    String value,
+    String change,
+    Color changeColor,
+  ) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey.shade50,
         borderRadius: BorderRadius.circular(8),
       ),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(4),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
-                change.startsWith('+') ? Icons.trending_up : Icons.trending_down,
+                change.startsWith('+')
+                    ? Icons.trending_up
+                    : Icons.trending_down,
                 size: 12,
                 color: changeColor,
               ),
               const SizedBox(width: 4),
               Text(
-              change,
-              style: TextStyle(
-                color: changeColor,
-                fontSize: 12,
-                fontFamily: 'sans-serif',
+                change,
+                style: TextStyle(
+                  color: changeColor,
+                  fontSize: 12,
+                  fontFamily: 'sans-serif',
+                ),
               ),
-            ),
             ],
           ),
           const SizedBox(height: 8),
           Text(
-              value,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'sans-serif',
-              ),
+            value,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'sans-serif',
+              overflow: TextOverflow.ellipsis,
             ),
+          ),
           const SizedBox(height: 4),
           Text(
-              title,
-              style: TextStyle(
-                color: Colors.grey.shade600,
-                fontSize: 12,
-                fontFamily: 'sans-serif',
-              ),
+            title,
+            style: TextStyle(
+              color: Colors.grey.shade600,
+              fontSize: 12,
+              fontFamily: 'sans-serif',
             ),
+          ),
+          const SizedBox(height: 4),
         ],
       ),
     );
@@ -201,7 +243,14 @@ class _DataPageState extends State<DataPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('指标分析', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'sans-serif')),
+          const Text(
+            '指标分析',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'sans-serif',
+            ),
+          ),
           const SizedBox(height: 16),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -240,18 +289,24 @@ class _DataPageState extends State<DataPage> {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Text(
-            text,
-            style: TextStyle(
-              color: isSelected ? Colors.white : Colors.black,
-              fontSize: 12,
-              fontFamily: 'sans-serif',
-            ),
+          text,
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.black,
+            fontSize: 12,
+            fontFamily: 'sans-serif',
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildPriceRangeCard(String range, String quoteCount, String dealCount, String dealAmount, String dealRate) {
+  Widget _buildPriceRangeCard(
+    String range,
+    String quoteCount,
+    String dealCount,
+    String dealAmount,
+    String dealRate,
+  ) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey.shade50,
@@ -315,7 +370,14 @@ class _DataPageState extends State<DataPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('订单跟踪', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'sans-serif')),
+          const Text(
+            '订单跟踪',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'sans-serif',
+            ),
+          ),
           const SizedBox(height: 16),
           GridView.count(
             shrinkWrap: true,
