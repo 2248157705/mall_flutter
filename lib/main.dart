@@ -1,54 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:login_app/home_page.dart';
 import 'package:login_app/service/api_client.dart';
-import 'package:login_app/store/user_provider.dart';
+import 'package:login_app/store/token_provider.dart'; // Import the new token provider
 import 'package:login_app/model/login_request.dart';
 import 'package:dio/dio.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => UserProvider(),
-      child: const MyApp(),
+    const ProviderScope( // Wrap the app with ProviderScope
+      child: MyApp(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final token = ref.watch(tokenProvider); 
     return MaterialApp(
       title: 'Login App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginPage(),
+      home: token != null && token.isNotEmpty ? const HomePage() : const LoginPage(),
     );
   }
 }
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget { // Changed to ConsumerStatefulWidget
   const LoginPage({super.key});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState(); // Changed to ConsumerState
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> { // Changed to ConsumerState
   bool _isChecked = false;
   bool _showOtherLogin = false;
-  late final LoginService _loginService;
-  final Dio _dio = buildDioClient("https://testenv.xinguojun.cn/api/gtw/xgj-mall-api/");
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _loginService = LoginService(_dio);
   }
 
   void _login() async {
@@ -65,13 +62,14 @@ class _LoginPageState extends State<LoginPage> {
 
       print('Login Request: ${request.toJson()}');
 
-      final response = await _loginService.login(request);
+      // Use the loginServiceProvider from Riverpod
+      final response = await ref.read(loginServiceProvider("https://testenv.huanjintech.com/api/gtw/xgj-mall-api/"))
+          .login(request);
       print('Login Response: ${response.toJson()}');
 
       if (response.data != null) {
-        // Save the token
-        Provider.of<UserProvider>(context, listen: false)
-            .setToken(response.data!.token);
+        // Save the token using tokenProvider
+        await ref.read(tokenProvider.notifier).setToken(response.data!.token);
 
         // Navigate to HomePage
         Navigator.pushReplacement(

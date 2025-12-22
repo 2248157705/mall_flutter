@@ -341,13 +341,13 @@ class _InquiryPageState extends State<InquiryPage> with TickerProviderStateMixin
                 const Text('2025-09-22 18:36:49', style: TextStyle(color: Colors.grey, fontSize: 12)),
                 OutlinedButton(
                   onPressed: () {},
-                  child: const Text('查看详情', style: TextStyle(color: Colors.grey)),
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(color: Colors.grey.shade300),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
                     ),
                   ),
+                  child: const Text('查看详情', style: TextStyle(color: Colors.grey)),
                 ),
               ],
             ),

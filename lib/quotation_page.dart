@@ -134,9 +134,9 @@ class QuotationPage extends StatelessWidget {
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.all(16.0),
-      child: Column(
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children: [
           Text('店员选择项', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           SizedBox(height: 16),
           Text('外观细微划痕, 无磕碰 | 屏幕轻微使用痕迹 | NFC正常 | 震动正常 | 闪光灯正常 | 重力感应正常'),

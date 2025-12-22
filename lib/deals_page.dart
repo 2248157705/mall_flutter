@@ -116,7 +116,7 @@ class _DealsPageState extends State<DealsPage> with SingleTickerProviderStateMix
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DetailPage(orderId: 1179)),
+          MaterialPageRoute(builder: (context) => const DetailPage(orderId: 1179)),
         );
       },
       child: Card(
@@ -186,7 +186,7 @@ class _DealsPageState extends State<DealsPage> with SingleTickerProviderStateMix
                     onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => DetailPage(orderId: 1179)),
+                          MaterialPageRoute(builder: (context) => const DetailPage(orderId: 1179)),
                         );
                     },
                     child: const Text('查看详情'),

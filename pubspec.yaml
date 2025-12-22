@@ -35,6 +35,8 @@ dependencies:
   retrofit: ^4.0.0 # Let pub choose latest compatible
   json_annotation: ^4.0.0 # Let pub choose latest compatible
   provider: ^6.0.0 # Let pub choose latest compatible
+  flutter_secure_storage: ^9.0.0 # Let pub choose latest compatible
+  flutter_riverpod: ^2.5.1 # Let pub choose latest compatible
 
 dev_dependencies:
   flutter_test:
