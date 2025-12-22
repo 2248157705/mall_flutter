@@ -20,7 +20,7 @@ class _DataPageState extends State<DataPage> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: const Icon(Icons.arrow_back_ios, color: Colors.black),
-        title: const Text('数据', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold)),
+        title: const Text('数据', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold, fontFamily: 'sans-serif')),
         centerTitle: true,
         actions: [
           Container(
@@ -67,7 +67,7 @@ class _DataPageState extends State<DataPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('核心指标监控', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              const Text('核心指标监控', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'sans-serif')),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
@@ -76,7 +76,7 @@ class _DataPageState extends State<DataPage> {
                 ),
                 child: Row(
                   children: const [
-                    Text('选择报价师', style: TextStyle(fontSize: 12)),
+                    Text('选择报价师', style: TextStyle(fontSize: 12, fontFamily: 'sans-serif')),
                     SizedBox(width: 4),
                     Icon(Icons.keyboard_arrow_down, size: 16),
                   ],
@@ -97,7 +97,7 @@ class _DataPageState extends State<DataPage> {
               ),
               TextButton(
                 onPressed: () {},
-                child: const Text('自定义时间', style: TextStyle(color: Colors.blue)),
+                child: const Text('自定义时间', style: TextStyle(color: Colors.blue, fontFamily: 'sans-serif')),
               ),
             ],
           ),
@@ -106,7 +106,7 @@ class _DataPageState extends State<DataPage> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             crossAxisCount: 4,
-            mainAxisSpacing: 16,
+            mainAxisSpacing: 8,
             crossAxisSpacing: 16,
             children: [
               _buildMetricCard('订单推流', '6093', '+19.85%', Colors.red),
@@ -133,12 +133,13 @@ class _DataPageState extends State<DataPage> {
         borderRadius: BorderRadius.circular(16),
       ),
       child: Text(
-        text,
-        style: TextStyle(
-          color: isSelected ? Colors.white : Colors.black,
-          fontSize: 12,
-        ),
-      ),
+            text,
+            style: TextStyle(
+              color: isSelected ? Colors.white : Colors.black,
+              fontSize: 12,
+              fontFamily: 'sans-serif',
+            ),
+          ),
     );
   }
 
@@ -161,30 +162,33 @@ class _DataPageState extends State<DataPage> {
               ),
               const SizedBox(width: 4),
               Text(
-                change,
-                style: TextStyle(
-                  color: changeColor,
-                  fontSize: 12,
-                ),
+              change,
+              style: TextStyle(
+                color: changeColor,
+                fontSize: 12,
+                fontFamily: 'sans-serif',
               ),
+            ),
             ],
           ),
           const SizedBox(height: 8),
           Text(
-            value,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+              value,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'sans-serif',
+              ),
             ),
-          ),
           const SizedBox(height: 4),
           Text(
-            title,
-            style: TextStyle(
-              color: Colors.grey.shade600,
-              fontSize: 12,
+              title,
+              style: TextStyle(
+                color: Colors.grey.shade600,
+                fontSize: 12,
+                fontFamily: 'sans-serif',
+              ),
             ),
-          ),
         ],
       ),
     );
@@ -197,7 +201,7 @@ class _DataPageState extends State<DataPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('指标分析', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const Text('指标分析', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'sans-serif')),
           const SizedBox(height: 16),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -236,11 +240,12 @@ class _DataPageState extends State<DataPage> {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Text(
-          text,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black,
-            fontSize: 12,
-          ),
+            text,
+            style: TextStyle(
+              color: isSelected ? Colors.white : Colors.black,
+              fontSize: 12,
+              fontFamily: 'sans-serif',
+            ),
         ),
       ),
     );
@@ -261,6 +266,7 @@ class _DataPageState extends State<DataPage> {
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
+              fontFamily: 'sans-serif',
             ),
           ),
           const SizedBox(height: 12),
@@ -286,6 +292,7 @@ class _DataPageState extends State<DataPage> {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
+            fontFamily: 'sans-serif',
           ),
         ),
         const SizedBox(height: 4),
@@ -294,6 +301,7 @@ class _DataPageState extends State<DataPage> {
           style: TextStyle(
             color: Colors.grey.shade600,
             fontSize: 12,
+            fontFamily: 'sans-serif',
           ),
         ),
       ],
@@ -307,13 +315,13 @@ class _DataPageState extends State<DataPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('订单跟踪', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const Text('订单跟踪', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'sans-serif')),
           const SizedBox(height: 16),
           GridView.count(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             crossAxisCount: 4,
-            mainAxisSpacing: 16,
+            mainAxisSpacing: 8,
             crossAxisSpacing: 16,
             children: [
               _buildTrackingCard('待发货', '365'),
@@ -340,16 +348,18 @@ class _DataPageState extends State<DataPage> {
           Text(
             value,
             style: const TextStyle(
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
+              fontFamily: 'sans-serif',
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 4),
           Text(
             title,
             style: TextStyle(
               color: Colors.grey.shade600,
               fontSize: 12,
+              fontFamily: 'sans-serif',
             ),
           ),
         ],

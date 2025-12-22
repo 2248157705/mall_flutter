@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:login_app/home_page.dart';
 import 'package:login_app/service/api_client.dart';
@@ -25,6 +26,13 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      locale: const Locale('zh', 'CN'),
+      supportedLocales: const [Locale('zh', 'CN'), Locale('en', 'US')],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       home: token != null && token.isNotEmpty ? const HomePage() : const LoginPage(),
     );
   }
@@ -110,9 +118,9 @@ class _LoginPageState extends ConsumerState<LoginPage> { // Changed to ConsumerS
             ),
           ),
           child: const Text(
-            '手机号一键登录',
-            style: TextStyle(fontSize: 18, color: Colors.white),
-          ),
+              '手机号一键登录',
+              style: TextStyle(fontSize: 18, color: Colors.white, fontFamily: 'sans-serif'),
+            ),
         ),
         const SizedBox(height: 16),
         OutlinedButton(
@@ -129,9 +137,9 @@ class _LoginPageState extends ConsumerState<LoginPage> { // Changed to ConsumerS
             side: const BorderSide(color: Colors.grey),
           ),
           child: const Text(
-            '其他帐号登录',
-            style: TextStyle(fontSize: 18, color: Colors.black),
-          ),
+              '其他帐号登录',
+              style: TextStyle(fontSize: 18, color: Colors.black, fontFamily: 'sans-serif'),
+            ),
         ),
       ],
     );
@@ -181,9 +189,9 @@ class _LoginPageState extends ConsumerState<LoginPage> { // Changed to ConsumerS
             ),
           ),
           child: const Text(
-            '登录',
-            style: TextStyle(fontSize: 18, color: Colors.white),
-          ),
+              '登录',
+              style: TextStyle(fontSize: 18, color: Colors.white, fontFamily: 'sans-serif'),
+            ),
         ),
       ],
     );
@@ -212,15 +220,17 @@ class _LoginPageState extends ConsumerState<LoginPage> { // Changed to ConsumerS
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
+                  fontFamily: 'sans-serif',
                 ),
               ),
               const SizedBox(height: 8),
               if (!_showOtherLogin)
                 const Text(
                   '欢迎使用「新果骏」',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 24,
                     color: Colors.black,
+                    fontFamily: 'sans-serif',
                   ),
                 ),
               if (!_showOtherLogin)
@@ -228,9 +238,10 @@ class _LoginPageState extends ConsumerState<LoginPage> { // Changed to ConsumerS
               if (!_showOtherLogin)
                 const Text(
                   '注册登录,即可使用',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     color: Colors.grey,
+                    fontFamily: 'sans-serif',
                   ),
                 ),
               const Spacer(flex: 3),
@@ -253,18 +264,18 @@ class _LoginPageState extends ConsumerState<LoginPage> { // Changed to ConsumerS
                   const Flexible(
                     child: Text.rich(
                       TextSpan(
-                        text: '我已阅读并同意',
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
-                        children: [
-                          TextSpan(
-                            text: '《用户协议》',
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                          TextSpan(text: '和'),
-                          TextSpan(
-                            text: '《隐私协议》',
-                            style: TextStyle(color: Colors.blue),
-                          ),
+                          text: '我已阅读并同意',
+                          style: TextStyle(fontSize: 12, color: Colors.grey, fontFamily: 'sans-serif'),
+                          children: [
+                            TextSpan(
+                              text: '《用户协议》',
+                              style: TextStyle(color: Colors.blue, fontFamily: 'sans-serif'),
+                            ),
+                            TextSpan(text: '和', style: TextStyle(fontFamily: 'sans-serif')),
+                            TextSpan(
+                              text: '《隐私协议》',
+                              style: TextStyle(color: Colors.blue, fontFamily: 'sans-serif'),
+                            ),
                         ],
                       ),
                     ),
