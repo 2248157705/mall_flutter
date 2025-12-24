@@ -1,20 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:dio/dio.dart';
 import 'package:login_app/detail_page.dart';
+import 'package:login_app/model/order_list_response.dart';
+import 'package:login_app/service/order_api_client.dart';
 
-class DealsPage extends StatefulWidget {
+class DealsPage extends ConsumerStatefulWidget {
   const DealsPage({super.key});
 
   @override
-  State<DealsPage> createState() => _DealsPageState();
+  ConsumerState<DealsPage> createState() => _DealsPageState();
 }
 
-class _DealsPageState extends State<DealsPage> with SingleTickerProviderStateMixin {
+class _DealsPageState extends ConsumerState<DealsPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  List<OrderItem> orderList = [];
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 6, vsync: this);
+    _fetchOrderList();
+  }
+
+  void _fetchOrderList() async {
+    try {
+      final response = await ref.read(orderServiceProvider("https://testenv.manhd.cn/api/gtw/xgj-mall-api/"))
+          .queryOrders({
+            'pageSize': 12,
+            'currentPage': 1,
+          });
+      
+      if (response.data != null && response.data.code == 0) {
+        setState(() {
+          orderList = response.data.data.data;
+        });
+        print('Order List: $orderList'); // Debugging statement
+      } else {
+        print('Order list data is null in response.');
+      }
+    } on DioException catch (e) {
+      print('Error fetching order list: ${e.message}');
+      print('DioError response data: ${e.response?.data}');
+    } catch (e) {
+      print('An unexpected error occurred: $e');
+    }
   }
 
   @override
@@ -103,12 +133,29 @@ class _DealsPageState extends State<DealsPage> with SingleTickerProviderStateMix
 
   Widget _buildDealsList() {
     return ListView(
-      children: [
-        _buildDealItem('iPhone13 mini', '已完成', '¥500', '128G', 'KA', '0人报价', '王完美'),
-        _buildDealItem('iPhone13 mini', '已完成', '¥500', '128G', 'KA', '0人报价', '王完美'),
-        _buildDealItem('iPhone13 mini', null, '¥500', '128G', 'KA', '0人报价', null),
-      ],
+      children: orderList.map((order) {
+        return _buildDealItem(
+          order.itemName ?? '未知商品',
+          _getStatusText(order.orderStatus),
+          '¥${order.dealAmount}',
+          '', // itemSpec not available in OrderItem model
+          'KA',
+          '0人报价',
+          null, // quoterName not available in OrderItem model
+        );
+      }).toList(),
     );
+  }
+
+  String _getStatusText(int status) {
+    switch (status) {
+      case 10: return '待发货';
+      case 20: return '待收货';
+      case 30: return '暂停收货';
+      case 40: return '已完成';
+      case 50: return '待验收';
+      default: return '未知状态';
+    }
   }
 
   Widget _buildDealItem(String title, String? status, String price, String storage, String type, String quote, String? quoter) {
