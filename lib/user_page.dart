@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:login_app/address_page.dart';
 
 class UserInfo {
   final String avatar;
@@ -88,7 +89,11 @@ class _UserPageState extends State<UserPage> {
                   leading: Icon(list[index]['icon']),
                   title: Text(list[index]['title']),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
-                  onTap: () {},
+                  onTap: () {
+                    if(index==3){
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AddressPage()));
+                    }
+                  },
                 );
               },
             ),

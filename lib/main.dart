@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:login_app/address_page.dart';
 import 'package:login_app/home_page.dart';
 import 'package:login_app/service/api_client.dart';
 import 'package:login_app/store/token_provider.dart'; // Import the new token provider
@@ -36,7 +37,7 @@ class MyApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       home: token != null && token.isNotEmpty ? const HomePage() : const LoginPage(),
-       // home:const WalletPage(),
+      //  home:const AddressPage(),
     );
   }
 }
