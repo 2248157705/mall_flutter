@@ -7,6 +7,8 @@ import 'package:login_app/store/token_provider.dart'; // Import the new token pr
 import 'package:login_app/model/login_request.dart';
 import 'package:dio/dio.dart';
 
+import 'package:login_app/wallet_page.dart';
+
 void main() {
   runApp(
     const ProviderScope( // Wrap the app with ProviderScope
@@ -34,6 +36,7 @@ class MyApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       home: token != null && token.isNotEmpty ? const HomePage() : const LoginPage(),
+       // home:const WalletPage(),
     );
   }
 }
@@ -200,20 +203,22 @@ class _LoginPageState extends ConsumerState<LoginPage> { // Changed to ConsumerS
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/login/1.png'),
+      body: Stack(
+        children: [
+          // 背景图片
+          Image.asset(
+            'assets/images/login/1.png',
             fit: BoxFit.cover,
+            width: MediaQuery.of(context).size.width,
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              const Spacer(flex: 2),
+          // 登录内容
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+              const Spacer(flex: 1),
               Text(
                 _showOtherLogin ? '其他账号登录' : '您好!',
                 style: const TextStyle(
@@ -244,7 +249,7 @@ class _LoginPageState extends ConsumerState<LoginPage> { // Changed to ConsumerS
                     fontFamily: 'sans-serif',
                   ),
                 ),
-              const Spacer(flex: 3),
+              const Spacer(flex: 1),
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
                 child: _showOtherLogin ? _buildOtherLoginView() : _buildOneClickLoginView(),
@@ -286,7 +291,8 @@ class _LoginPageState extends ConsumerState<LoginPage> { // Changed to ConsumerS
             ],
           ),
         ),
-      ),
-    );
-  }
+      ],
+    ),
+  );
+}
 }

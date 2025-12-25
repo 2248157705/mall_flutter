@@ -46,13 +46,11 @@ final orderServiceProvider = Provider.family<OrderService, String>((ref, baseUrl
 });
 
 
-
 // // Provider for OrderDetailService that uses the dioClientProvider
 // final orderDetailServiceProvider = Provider.family<OrderDetailService, String>((ref, baseUrl) {
 //   final dio = ref.watch(dioClientProvider(baseUrl));
 //   return OrderDetailService(dio);
 // });
-
 
 // Provider for OrderDetailService that uses the dioClientProvider
 final orderDetailServiceProvider = Provider.family<OrderDetailService, String>((ref, baseUrl) {
